@@ -46,17 +46,39 @@ namespace Mapbox
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Put,
-                RequestUri = BaseAddress,
+                RequestUri = uri
             };
 
             return await RunRequest<T>(request);
         }
 
+        /// <summary>
+        /// Add access token to end of url, ensure we are requesting a .json file too
+        /// </summary>
+        /// <param name="url"></param>
+        static Uri FixupRequestTypeForUrl(Uri url)
+        {
+            if (!url.ToString().EndsWith(".json"))
+                return new Uri(url, new Uri(".json", UriKind.Relative));
+            return url;
+        }
+
+        Uri AddAccessToken(Uri url)
+        {
+            var accessToken = "?access_token=" + Credentials.AccessToken;
+            var builder = url.ToString() + accessToken;
+            return new Uri(builder, UriKind.Relative);
+        }
+
         async Task<T> RunRequest<T>(HttpRequestMessage request)
         {
-            var response = await _httpClient.SendAsync(request).ConfigureAwait(false);
+            Uri endpoint = FixupRequestTypeForUrl(request.RequestUri);
+            endpoint = AddAccessToken(endpoint);
+            request.RequestUri = endpoint;
+            var response = await _httpClient.SendAsync(request)
+                .ConfigureAwait(false);
             HandleErrors(response);
-            return response.Content;
+            return await response.Content.ReadAsAsync<T>();
         }
 
         static readonly Dictionary<HttpStatusCode, Exception> _httpExceptionMap =
@@ -72,6 +94,8 @@ namespace Mapbox
             Exception ex;
             if (_httpExceptionMap.TryGetValue(response.StatusCode, out ex))
             {
+                var content = response.Content.ReadAsStringAsync();
+                Console.WriteLine(content.Result);
                 throw ex;
             }
         }

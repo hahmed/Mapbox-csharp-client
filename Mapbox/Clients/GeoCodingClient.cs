@@ -24,14 +24,9 @@ namespace Mapbox
         /// <param name="query"></param>
         public async Task<string> SearchGeocoding(string query)
         {
-            var client = new HttpClient();
-            client.BaseAddress = _connection.BaseAddress;
-            var url = "geocode/mapbox.places-v1/" + query + ".json?access_token=" + _connection.Credentials.AccessToken;
-            Console.WriteLine("{0}{1}", client.BaseAddress, url);
-            var result = await client.GetAsync(url);
-            result.EnsureSuccessStatusCode();
-            var content = result.Content;
-            return await content.ReadAsStringAsync();
+            var url = new Uri("geocode/mapbox.places-v1/" + query + ".json", UriKind.Relative);
+            var result = await _connection.Get<string>(url, null);
+            return result;
         }
 
         /// <summary>

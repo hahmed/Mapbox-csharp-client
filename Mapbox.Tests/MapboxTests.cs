@@ -9,7 +9,7 @@ namespace Mapbox.Tests
 {
     public class MapboxTests
     {
-        private string token = "pk.eyJ1Ijoic3VydmVudHJ4IiwiYSI6IkoyaFI1Y1UifQ.VNkFQprin8MMlWK90ecnmg";
+        private string token = "your token";
         
         [Test]
         public void EnsureTokenIsNotNull()
@@ -28,7 +28,7 @@ namespace Mapbox.Tests
         {
             var credentials = new Credentials(token);
             var client = new MapboxClient(credentials);
-            var result = client.GeocodingApi.SearchGeocoding("cv2");
+            var result = client.GeocodingApi.SearchGeocoding("coventry");
             Console.WriteLine(result.Result);
         }
     }

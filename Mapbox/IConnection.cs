@@ -11,5 +11,7 @@ namespace Mapbox
         Credentials Credentials { get; }
 
         Uri BaseAddress { get; }
+
+        Task<T> Get<T>(Uri uri, IDictionary<string, string> parameters);
     }
 }
