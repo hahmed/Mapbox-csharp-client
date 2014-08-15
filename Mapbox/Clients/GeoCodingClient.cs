@@ -27,9 +27,8 @@ namespace Mapbox
             var client = new HttpClient();
             client.BaseAddress = _connection.BaseAddress;
             var url = "geocode/mapbox.places-v1/" + query + ".json?access_token=" + _connection.Credentials.AccessToken;
-            Console.WriteLine(url);
+            Console.WriteLine("{0}{1}", client.BaseAddress, url);
             var result = await client.GetAsync(url);
-            Console.WriteLine(result);
             result.EnsureSuccessStatusCode();
             var content = result.Content;
             return await content.ReadAsStringAsync();

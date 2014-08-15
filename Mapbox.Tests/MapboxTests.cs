@@ -9,7 +9,8 @@ namespace Mapbox.Tests
 {
     public class MapboxTests
     {
-        private string token = "something_here";
+        private string token = "pk.eyJ1Ijoic3VydmVudHJ4IiwiYSI6IkoyaFI1Y1UifQ.VNkFQprin8MMlWK90ecnmg";
+        
         [Test]
         public void EnsureTokenIsNotNull()
         {

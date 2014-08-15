@@ -9,8 +9,7 @@ namespace Mapbox
 {
     public class MapboxClient
     {
-        public static readonly Uri MapboxApiUrl = new Uri("https://api.tiles.mapbox.com/" + ApiVersion + "/");
-        public static readonly string ApiVersion = "v4";
+        public static readonly Uri MapboxApiUrl = new Uri("https://api.tiles.mapbox.com/v4/");
 
         public MapboxClient(Credentials credentials)
         {
